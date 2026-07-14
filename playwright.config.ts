@@ -2,12 +2,13 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/specs',
-  fullyParallel: false,
-  retries: 0,
-  workers: 1,
+  fullyParallel: true,
+  retries: 1,
+  workers: 4,
   reporter: [
     ['html', { open: 'never' }],
     ['list'],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
   ],
   use: {
     baseURL: 'https://conduit.bondaracademy.com',
