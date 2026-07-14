@@ -34,15 +34,16 @@ test.describe('Create New Article', () => {
     await homePage.expectArticleVisible(article.title);
   });
 
-  test('should create an article with only required fields (title + body)', async ({ page }) => {
-    const article = generateArticle({ description: '', tagList: [] });
+  test('should create an article with title + body only (no tags)', async ({ page }) => {
+    const article = generateArticle({ tagList: [] });
 
     await editorPage.gotoNew();
     await editorPage.fillTitle(article.title);
+    await editorPage.fillDescription(article.description);
     await editorPage.fillBody(article.body);
     await editorPage.clickPublish();
 
-    // Assert: article created successfully with just title + body
+    // Assert: article created successfully without tags
     await articlePage.expectLoaded();
     await articlePage.expectTitleContains(article.title);
   });

@@ -29,7 +29,8 @@ export class ArticlePage {
   }
 
   async clickDelete() {
-    await this.deleteButton().click();
+    // The article page may have multiple delete buttons (e.g. at top & bottom)
+    await this.deleteButton().first().click();
   }
 
   // ── Assertions ────────────────────────────────────────────

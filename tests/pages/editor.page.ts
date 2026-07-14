@@ -19,10 +19,9 @@ export class EditorPage {
   private bodyInput = () =>
     this.page.getByPlaceholder('Write your article (in markdown)');
   private tagInput = () => this.page.getByPlaceholder('Enter tags');
-  private publishButton = () =>
+  // Conduit uses "Publish Article" for both create and edit flows
+  private submitButton = () =>
     this.page.getByRole('button', { name: 'Publish Article' });
-  private updateButton = () =>
-    this.page.getByRole('button', { name: 'Update Article' });
   private errorMessages = () => this.page.locator('.error-messages');
 
   // ── Actions ───────────────────────────────────────────────
@@ -69,11 +68,11 @@ export class EditorPage {
   }
 
   async clickPublish() {
-    await this.publishButton().click();
+    await this.submitButton().click();
   }
 
   async clickUpdate() {
-    await this.updateButton().click();
+    await this.submitButton().click();
   }
 
   // ── Assertions ────────────────────────────────────────────

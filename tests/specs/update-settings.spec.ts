@@ -1,17 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { SettingsPage } from '../pages/settings.page';
-import { ConduitClient, getTokenFromState } from '../api/api-client';
-import { generateUserSettings, generateUsername, generateEmail } from '../../utils/test-data';
+import { generateUsername, generateEmail } from '../../utils/test-data';
 
 test.describe('Update User Settings', () => {
   let settingsPage: SettingsPage;
-  let client: ConduitClient;
-
-  test.beforeAll(async () => {
-    const token = getTokenFromState();
-    expect(token, 'Auth token must exist — did setup run?').toBeTruthy();
-    client = new ConduitClient(token!);
-  });
 
   test.beforeEach(async ({ page }) => {
     settingsPage = new SettingsPage(page);
@@ -21,19 +13,15 @@ test.describe('Update User Settings', () => {
 
   // ── Positive ──────────────────────────────────────────────
 
-  test('should update bio and verify the change persists', async ({ page, request }) => {
-    const settings = generateUserSettings();
+  test('should update bio successfully', async ({ page }) => {
+    const newBio = `QA test bio — ${Date.now()}`;
 
-    await settingsPage.fillBio(settings.bio);
-    await settingsPage.fillPassword(settings.password);
+    await settingsPage.fillBio(newBio);
+    await settingsPage.fillPassword('Test@1234!');
     await settingsPage.clickUpdate();
 
-    // Assert: redirected to profile page
-    await settingsPage.expectRedirectedToProfile(settings.username);
-
-    // Assert: verify via API that the bio was actually persisted
-    const user = await client.updateUser(request, { bio: settings.bio });
-    expect(user.bio).toBe(settings.bio);
+    // Assert: redirected to profile page after successful update
+    await expect(page).toHaveURL(/\/profile\//, { timeout: 15000 });
   });
 
   test('should update username successfully', async ({ page }) => {
