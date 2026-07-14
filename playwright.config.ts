@@ -5,7 +5,10 @@ export default defineConfig({
   fullyParallel: false,
   retries: 0,
   workers: 1,
-  reporter: [['html', { open: 'never' }], ['list']],
+  reporter: [
+    ['html', { open: 'never' }],
+    ['list'],
+  ],
   use: {
     baseURL: 'https://conduit.bondaracademy.com',
     headless: true,
@@ -18,4 +21,37 @@ export default defineConfig({
   expect: {
     timeout: 10000,
   },
+  projects: [
+    // ── Auth setup project ──────────────────────────────────
+    {
+      name: 'setup',
+      testDir: './tests/api',
+      testMatch: /auth\.setup\.ts/,
+    },
+
+    // ── Browser projects (depend on setup for auth state) ──
+    {
+      name: 'chromium',
+      use: {
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'firefox',
+      use: {
+        storageState: 'playwright/.auth/user.json',
+        browserName: 'firefox',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'webkit',
+      use: {
+        storageState: 'playwright/.auth/user.json',
+        browserName: 'webkit',
+      },
+      dependencies: ['setup'],
+    },
+  ],
 });
