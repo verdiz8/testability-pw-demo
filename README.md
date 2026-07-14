@@ -1,5 +1,7 @@
 # testability-pw-demo
 
+[![Playwright E2E Tests](https://github.com/verdiz8/testability-pw-demo/actions/workflows/playwright.yml/badge.svg)](https://github.com/verdiz8/testability-pw-demo/actions/workflows/playwright.yml)
+
 Playwright E2E test automation framework for **Conduit** — a RealWorld blogging platform by [Bondar Academy](https://conduit.bondaracademy.com/).
 
 ## 📋 Test Scenarios
